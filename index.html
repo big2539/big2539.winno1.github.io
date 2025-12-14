@@ -18,7 +18,6 @@ html, body {
     overflow: hidden;
 }
 
-/* พื้นหลังไฟ */
 .bg {
     position: fixed;
     inset: 0;
@@ -34,7 +33,6 @@ html, body {
     100% { filter: hue-rotate(20deg); }
 }
 
-/* ครอบทั้งจอ */
 .container {
     position: relative;
     z-index: 2;
@@ -44,10 +42,8 @@ html, body {
     align-items: center;
     justify-content: center;
     padding: 12px;
-    box-sizing: border-box;
 }
 
-/* การ์ดหลัก */
 .card {
     width: 100%;
     max-width: 400px;
@@ -58,7 +54,6 @@ html, body {
     text-align: center;
 }
 
-/* รูป */
 .card img {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -67,7 +62,6 @@ html, body {
     box-shadow: 0 0 25px rgba(255,215,0,0.8);
 }
 
-/* หัวข้อ */
 h2 {
     margin: 16px 0 14px;
     font-size: 22px;
@@ -75,7 +69,6 @@ h2 {
     text-shadow: 0 0 10px rgba(255,215,0,0.8);
 }
 
-/* ปุ่ม */
 .btn {
     width: 100%;
     padding: 18px 0;
@@ -96,17 +89,15 @@ h2 {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 20px gold; }
-    50% { transform: scale(1.05); box-shadow: 0 0 40px orange; }
-    100% { transform: scale(1); box-shadow: 0 0 20px gold; }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-/* หมายเหตุ */
 .note {
     margin-top: 14px;
     font-size: 13px;
     color: #ccc;
-    opacity: .85;
 }
 </style>
 </head>
@@ -145,92 +136,89 @@ async function initLIFF() {
 async function shareFlex() {
   if (!liffReady) return;
 
-  await liff.shareTargetPicker(
-    [
-      {
-        "type": "flex",
-        "altText": "🎉 แจกทุนฟรี 100.-",
-        "contents": {
-          "type": "bubble",
-          "size": "giga",
-
-          "hero": {
-            "type": "image",
-            "url": "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
-            "size": "full",
-            "aspectRatio": "1:1",
-            "aspectMode": "cover"
-          },
-
-          "body": {
-            "type": "box",
-            "layout": "vertical",
-            "backgroundColor": "#111111",
-            "paddingAll": "0px",
-            "contents": [
-              {
-                "type": "box",
-                "layout": "vertical",
-                "height": "6px",
-                "background": {
-                  "type": "linearGradient",
-                  "angle": "0deg",
-                  "startColor": "#000000",
-                  "centerColor": "#FFD700",
-                  "endColor": "#000000"
-                }
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "paddingAll": "16px",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "แจกทุนฟรี100.-",
-                    "size": "xl",
-                    "weight": "bold",
-                    "color": "#ffce5c",
-                    "align": "center"
-                  },
-                  {
-                    "type": "text",
-                    "text": "สมัครกดรับโปรโมชั่นได้เลย",
-                    "size": "sm",
-                    "color": "#cccccc",
-                    "align": "center",
-                    "margin": "md"
+  try {
+    await liff.shareTargetPicker(
+      [
+        {
+          type: "flex",
+          altText: "🎉 แจกทุนฟรี 100.-",
+          contents: {
+            type: "bubble",
+            size: "giga",
+            hero: {
+              type: "image",
+              url: "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
+              size: "full",
+              aspectRatio: "1:1",
+              aspectMode: "cover"
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              backgroundColor: "#111111",
+              paddingAll: "0px",
+              contents: [
+                {
+                  type: "box",
+                  layout: "vertical",
+                  height: "6px",
+                  background: {
+                    type: "linearGradient",
+                    angle: "0deg",
+                    startColor: "#FFD700",
+                    endColor: "#000000"
                   }
-                ]
-              }
-            ]
-          },
-
-          "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "backgroundColor": "#000000",
-            "contents": [
-              {
-                "type": "button",
-                "style": "primary",
-                "color": "#FFD700",
-                "action": {
-                  "type": "uri",
-                  "label": "รับโบนัสฟรี100.-",
-                  "uri": "https://slotwinners.carrd.co"
+                },
+                {
+                  type: "box",
+                  layout: "vertical",
+                  paddingAll: "16px",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "แจกทุนฟรี100.-",
+                      size: "xl",
+                      weight: "bold",
+                      color: "#ffce5c",
+                      align: "center"
+                    },
+                    {
+                      type: "text",
+                      text: "สมัครกดรับโปรโมชั่นได้เลย",
+                      size: "sm",
+                      color: "#cccccc",
+                      align: "center",
+                      margin: "md"
+                    }
+                  ]
                 }
-              }
-            ]
+              ]
+            },
+            footer: {
+              type: "box",
+              layout: "vertical",
+              backgroundColor: "#000000",
+              contents: [
+                {
+                  type: "button",
+                  style: "primary",
+                  color: "#FFD700",
+                  action: {
+                    type: "uri",
+                    label: "รับโบนัสฟรี100.-",
+                    uri: "https://slotwinners.carrd.co"
+                  }
+                }
+              ]
+            }
           }
         }
-      }
-    ],
-    {
-      isMultiple: true,
-      targetType: ["user", "group"]
-    }
-  );
+      ],
+      { isMultiple: true, targetType: ["user", "group"] }
+    );
+  } catch (e) {
+    alert("ยกเลิกการแชร์");
+  }
 }
 
 initLIFF();
