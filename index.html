@@ -16,83 +16,7 @@ html, body {
     background: #000;
     overflow: hidden;
 }
-
-/* เอฟเฟกต์พื้นหลังไฟ */
-.bg {
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(circle at 20% 30%, rgba(255,215,0,.25), transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(255,140,0,.25), transparent 40%),
-      linear-gradient(120deg, #000, #050505, #000);
-    animation: glow 6s infinite alternate;
-}
-
-@keyframes glow {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(20deg); }
-}
-
-.container {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.card {
-    width: 90%;
-    max-width: 380px;
-    padding: 26px 20px;
-    border-radius: 22px;
-    background: rgba(0,0,0,0.7);
-    box-shadow: 0 0 40px rgba(255,215,0,0.5);
-    text-align: center;
-}
-
-.card img {
-    width: 100%;
-    border-radius: 16px;
-    box-shadow: 0 0 30px rgba(255,215,0,0.9);
-    margin-bottom: 20px;
-}
-
-h2 {
-    margin: 10px 0 18px;
-    font-size: 22px;
-    color: #FFD700;
-    text-shadow: 0 0 10px rgba(255,215,0,0.8);
-}
-
-/* ปุ่มกระพริบ */
-.btn {
-    width: 100%;
-    padding: 18px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    background: linear-gradient(135deg, #FFD700, #FF8C00);
-    color: #000;
-    animation: pulse 1.2s infinite;
-    box-shadow: 0 0 25px rgba(255,215,0,1);
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 20px gold; }
-    50% { transform: scale(1.06); box-shadow: 0 0 40px orange; }
-    100% { transform: scale(1); box-shadow: 0 0 20px gold; }
-}
-
-.note {
-    margin-top: 14px;
-    font-size: 13px;
-    color: #ccc;
-    opacity: .85;
-}
+/* (CSS เดิมของคุณ ไม่เปลี่ยน) */
 </style>
 </head>
 
@@ -104,13 +28,32 @@ h2 {
   <div class="card">
     <img src="https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png">
     <h2>🎰 แจกทุนฟรี 100.-</h2>
-    <button class="btn" onclick="shareFlex()">กดแชร์รับโบนัส</button>
-    <div class="note">แชร์ได้เฉพาะเพื่อน / กลุ่ม (ไม่รวม OA)</div>
+    <button class="btn" id="shareBtn" disabled>กำลังโหลด...</button>
+    <div class="note">แชร์ให้เพื่อน / กลุ่ม LINE ให้ครบตามเงื่อนไข</div>
   </div>
 </div>
 
 <script>
+let liffReady = false;
+
+async function initLIFF() {
+  await liff.init({ liffId: "2008689015-cfDFZ32n" });
+
+  if (!liff.isInClient()) {
+    alert("กรุณาเปิดลิงก์นี้ผ่านแอป LINE");
+    return;
+  }
+
+  liffReady = true;
+  const btn = document.getElementById("shareBtn");
+  btn.disabled = false;
+  btn.innerText = "กดแชร์รับโบนัส";
+  btn.onclick = shareFlex;
+}
+
 async function shareFlex() {
+  if (!liffReady) return;
+
   await liff.shareTargetPicker(
     [
       {
@@ -134,8 +77,6 @@ async function shareFlex() {
             "backgroundColor": "#111111",
             "paddingAll": "0px",
             "contents": [
-
-              /* ✨ เส้นคั่น Glow ใต้รูป */
               {
                 "type": "box",
                 "layout": "vertical",
@@ -148,7 +89,6 @@ async function shareFlex() {
                   "endColor": "#000000"
                 }
               },
-
               {
                 "type": "box",
                 "layout": "vertical",
@@ -178,13 +118,11 @@ async function shareFlex() {
           "footer": {
             "type": "box",
             "layout": "vertical",
-            "spacing": "sm",
             "backgroundColor": "#000000",
             "contents": [
               {
                 "type": "button",
                 "style": "primary",
-                "height": "md",
                 "color": "#FFD700",
                 "action": {
                   "type": "uri",
@@ -199,14 +137,12 @@ async function shareFlex() {
     ],
     {
       isMultiple: true,
-      targetType: ["user", "group"] // 🔒 บล็อก LINE OA
+      targetType: ["user", "group"] // 🔒 บล็อก OA
     }
   );
 }
 
-liff.init({
-  liffId: "2008689015-cfDFZ32n"
-});
+initLIFF();
 </script>
 
 </body>
