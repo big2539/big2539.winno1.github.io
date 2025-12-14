@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>แชร์รับโบนัส VIP</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -12,11 +12,102 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    width: 100%;
     font-family: 'Prompt', sans-serif;
     background: #000;
     overflow: hidden;
 }
-/* (CSS เดิมของคุณ ไม่เปลี่ยน) */
+
+/* พื้นหลังไฟ */
+.bg {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,215,0,.25), transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(255,140,0,.25), transparent 45%),
+      linear-gradient(120deg, #000, #050505, #000);
+    animation: glow 6s infinite alternate;
+}
+
+@keyframes glow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(20deg); }
+}
+
+/* ครอบทั้งจอ */
+.container {
+    position: relative;
+    z-index: 2;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+/* การ์ดหลัก */
+.card {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(0,0,0,0.75);
+    border-radius: 22px;
+    padding: 20px;
+    box-shadow: 0 0 40px rgba(255,215,0,0.45);
+    text-align: center;
+}
+
+/* รูป */
+.card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(255,215,0,0.8);
+}
+
+/* หัวข้อ */
+h2 {
+    margin: 16px 0 14px;
+    font-size: 22px;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255,215,0,0.8);
+}
+
+/* ปุ่ม */
+.btn {
+    width: 100%;
+    padding: 18px 0;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: #000;
+    animation: pulse 1.2s infinite;
+    box-shadow: 0 0 25px rgba(255,215,0,1);
+}
+
+.btn:disabled {
+    opacity: .6;
+    animation: none;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 20px gold; }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px orange; }
+    100% { transform: scale(1); box-shadow: 0 0 20px gold; }
+}
+
+/* หมายเหตุ */
+.note {
+    margin-top: 14px;
+    font-size: 13px;
+    color: #ccc;
+    opacity: .85;
+}
 </style>
 </head>
 
@@ -29,7 +120,7 @@ html, body {
     <img src="https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png">
     <h2>🎰 แจกทุนฟรี 100.-</h2>
     <button class="btn" id="shareBtn" disabled>กำลังโหลด...</button>
-    <div class="note">แชร์ให้เพื่อน / กลุ่ม LINE ให้ครบตามเงื่อนไข</div>
+    <div class="note">แชร์ให้เพื่อน / กลุ่ม LINE เท่านั้น</div>
   </div>
 </div>
 
@@ -40,7 +131,7 @@ async function initLIFF() {
   await liff.init({ liffId: "2008689015-cfDFZ32n" });
 
   if (!liff.isInClient()) {
-    alert("กรุณาเปิดลิงก์นี้ผ่านแอป LINE");
+    alert("กรุณาเปิดหน้านี้ผ่านแอป LINE");
     return;
   }
 
@@ -137,7 +228,7 @@ async function shareFlex() {
     ],
     {
       isMultiple: true,
-      targetType: ["user", "group"] // 🔒 บล็อก OA
+      targetType: ["user", "group"]
     }
   );
 }
