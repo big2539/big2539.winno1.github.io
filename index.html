@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>แชร์รับโบนัส VIP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แชร์โบนัส VIP</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -12,92 +12,113 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    width: 100%;
-    font-family: 'Prompt', sans-serif;
     background: #000;
+    font-family: 'Prompt', sans-serif;
     overflow: hidden;
 }
 
+/* พื้นหลัง */
 .bg {
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at 20% 30%, rgba(255,215,0,.25), transparent 45%),
-      radial-gradient(circle at 80% 70%, rgba(255,140,0,.25), transparent 45%),
+      radial-gradient(circle at 20% 30%, rgba(255,215,0,.25), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,140,0,.25), transparent 40%),
       linear-gradient(120deg, #000, #050505, #000);
-    animation: glow 6s infinite alternate;
+    animation: moveBg 6s infinite alternate;
 }
 
-@keyframes glow {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(20deg); }
+@keyframes moveBg {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(20deg); }
 }
 
 .container {
     position: relative;
     z-index: 2;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
 }
 
 .card {
-    width: 100%;
-    max-width: 400px;
-    background: rgba(0,0,0,0.75);
+    width: 90%;
+    max-width: 380px;
+    padding: 26px 20px;
     border-radius: 22px;
-    padding: 20px;
-    box-shadow: 0 0 40px rgba(255,215,0,0.45);
+    background: rgba(0,0,0,0.75);
+    box-shadow: 0 0 40px rgba(255,215,0,.5);
     text-align: center;
 }
 
 .card img {
     width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
     border-radius: 16px;
-    box-shadow: 0 0 25px rgba(255,215,0,0.8);
+    box-shadow: 0 0 30px rgba(255,215,0,.9);
+    margin-bottom: 18px;
 }
 
 h2 {
-    margin: 16px 0 14px;
-    font-size: 22px;
     color: #FFD700;
-    text-shadow: 0 0 10px rgba(255,215,0,0.8);
+    text-shadow: 0 0 10px rgba(255,215,0,.8);
 }
 
 .btn {
     width: 100%;
-    padding: 18px 0;
+    padding: 18px;
     font-size: 20px;
     font-weight: bold;
     border-radius: 50px;
     border: none;
     cursor: pointer;
-    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    background: linear-gradient(135deg,#FFD700,#FF8C00);
     color: #000;
     animation: pulse 1.2s infinite;
-    box-shadow: 0 0 25px rgba(255,215,0,1);
-}
-
-.btn:disabled {
-    opacity: .6;
-    animation: none;
 }
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.06); }
     100% { transform: scale(1); }
 }
 
 .note {
-    margin-top: 14px;
+    margin-top: 12px;
     font-size: 13px;
     color: #ccc;
+}
+
+/* 🎰 SLOT OVERLAY */
+.slot-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+    flex-direction: column;
+    color: #FFD700;
+}
+
+.slots {
+    display: flex;
+    gap: 10px;
+    font-size: 50px;
+    animation: spin 0.8s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+}
+
+.success-text {
+    margin-top: 18px;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
 }
 </style>
 </head>
@@ -106,122 +127,75 @@ h2 {
 
 <div class="bg"></div>
 
+<div class="slot-overlay" id="slot">
+  <div class="slots">🎰 🎰 🎰</div>
+  <div class="success-text" id="successText"></div>
+</div>
+
 <div class="container">
   <div class="card">
     <img src="https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png">
-    <h2>🎰 แจกทุนฟรี 100.-</h2>
-    <button class="btn" id="shareBtn" disabled>กำลังโหลด...</button>
+    <h2>🎰 รับโบนัสฟรี100.-</h2>
+    <button class="btn" onclick="shareFlex()">กดแชร์รับโบนัส</button>
     <div class="note">แชร์ให้เพื่อน / กลุ่ม LINE เท่านั้น</div>
   </div>
 </div>
 
 <script>
-let liffReady = false;
-
-async function initLIFF() {
-  await liff.init({ liffId: "2008689015-cfDFZ32n" });
-
-  if (!liff.isInClient()) {
-    alert("กรุณาเปิดหน้านี้ผ่านแอป LINE");
-    return;
-  }
-
-  liffReady = true;
-  const btn = document.getElementById("shareBtn");
-  btn.disabled = false;
-  btn.innerText = "กดแชร์รับโบนัส";
-  btn.onclick = shareFlex;
-}
+liff.init({ liffId: "2008689015-cfDFZ32n" });
 
 async function shareFlex() {
-  if (!liffReady) return;
+  document.getElementById("slot").style.display = "flex";
 
   try {
-    await liff.shareTargetPicker(
-      [
-        {
-          type: "flex",
-          altText: "🎉 แจกทุนฟรี 100.-",
-          contents: {
-            type: "bubble",
-            size: "giga",
-            hero: {
-              type: "image",
-              url: "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
-              size: "full",
-              aspectRatio: "1:1",
-              aspectMode: "cover"
-            },
-            body: {
-              type: "box",
-              layout: "vertical",
-              backgroundColor: "#111111",
-              paddingAll: "0px",
-              contents: [
-                {
-                  type: "box",
-                  layout: "vertical",
-                  height: "6px",
-                  background: {
-                    type: "linearGradient",
-                    angle: "0deg",
-                    startColor: "#FFD700",
-                    endColor: "#000000"
-                  }
-                },
-                {
-                  type: "box",
-                  layout: "vertical",
-                  paddingAll: "16px",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "แจกทุนฟรี100.-",
-                      size: "xl",
-                      weight: "bold",
-                      color: "#ffce5c",
-                      align: "center"
-                    },
-                    {
-                      type: "text",
-                      text: "สมัครกดรับโปรโมชั่นได้เลย",
-                      size: "sm",
-                      color: "#cccccc",
-                      align: "center",
-                      margin: "md"
-                    }
-                  ]
+    const result = await liff.shareTargetPicker([
+      {
+        type: "flex",
+        altText: "🎉 รับโบนัสฟรี 100.-",
+        contents: {
+          type: "bubble",
+          size: "mega",
+          hero: {
+            type: "image",
+            url: "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
+            size: "full",
+            aspectMode: "cover",
+            aspectRatio: "1:1"
+          },
+          footer: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "button",
+                style: "primary",
+                color: "#FFD700",
+                action: {
+                  type: "uri",
+                  label: "คลิกรับโบนัสฟรี100.-",
+                  uri: "https://slotwinners.carrd.co"
                 }
-              ]
-            },
-            footer: {
-              type: "box",
-              layout: "vertical",
-              backgroundColor: "#000000",
-              contents: [
-                {
-                  type: "button",
-                  style: "primary",
-                  color: "#FFD700",
-                  action: {
-                    type: "uri",
-                    label: "รับโบนัสฟรี100.-",
-                    uri: "https://slotwinners.carrd.co"
-                  }
-                }
-              ]
-            }
+              }
+            ]
           }
         }
-      ],
-      { isMultiple: true, targetType: ["user", "group"] }
-    );
+      }
+    ]);
+
+    if (result) {
+      document.querySelector(".slots").style.animation = "none";
+      document.getElementById("successText").innerHTML =
+        "✅ แชร์สำเร็จแล้ว<br>📸 แคปภาพส่งแอดมิน<br>🎁 รอรับโค้ดได้เลย";
+
+      setTimeout(() => {
+        liff.closeWindow();
+      }, 1500);
+    }
   } catch (e) {
+    document.getElementById("slot").style.display = "none";
     alert("ยกเลิกการแชร์");
   }
 }
-
-initLIFF();
 </script>
 
 </body>
