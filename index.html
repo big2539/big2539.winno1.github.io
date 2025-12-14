@@ -17,7 +17,6 @@ html, body {
     overflow: hidden;
 }
 
-/* พื้นหลัง */
 .bg {
     position: fixed;
     inset: 0;
@@ -89,7 +88,6 @@ h2 {
     color: #ccc;
 }
 
-/* 🎰 SLOT OVERLAY */
 .slot-overlay {
     position: fixed;
     inset: 0;
@@ -155,109 +153,91 @@ async function shareFlex() {
 
   try {
     const result = await liff.shareTargetPicker(
-      [
-        {
-          type: "flex",
-          altText: "🎉 รับโบนัสฟรี 100.-",
-          contents: {
-            "type": "bubble",
-            "size": "mega",
+      [{
+        type: "flex",
+        altText: "🎉 รับโบนัสฟรี 100.-",
+        contents: {
+          type: "bubble",
+          size: "mega",
 
-            "hero": {
-              "type": "image",
-              "url": "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
-              "size": "full",
-              "aspectRatio": "1:1",
-              "aspectMode": "cover"
-            },
+          hero: {
+            type: "image",
+            url: "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
+            size: "full",
+            aspectRatio: "1:1",
+            aspectMode: "cover"
+          },
 
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "backgroundColor": "#0b0b0b",
-              "paddingAll": "0px",
-              "contents": [
-                },
-                {
-                  "type": "box",
-                  "layout": "vertical",
-                  "paddingAll": "16px",
-                  "spacing": "md",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "🎰 แจกโบนัส VIP",
-                      "size": "xl",
-                      "weight": "bold",
-                      "color": "#FFD700",
-                      "align": "center"
-                    },
-                    {
-                      "type": "text",
-                      "text": "สมาชิกใหม่ รับทันที 100.-",
-                      "size": "md",
-                      "color": "#ffffff",
-                      "align": "center"
-                    },
-                    {
-                      "type": "text",
-                      "text": "ไม่ต้องฝาก • ไม่ต้องแชร์ OA\nรับจริง ถอนจริง",
-                      "size": "sm",
-                      "color": "#cccccc",
-                      "align": "center",
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "⏳ จำกัดจำนวน รีบรับก่อนหมด!",
-                      "size": "sm",
-                      "color": "#ff6a00",
-                      "align": "center",
-                      "weight": "bold"
-                    }
-                  ]
-                }
-              ]
-            },
+          body: {
+            type: "box",
+            layout: "vertical",
+            backgroundColor: "#0b0b0b",
+            paddingAll: "16px",
+            spacing: "md",
+            contents: [
+              {
+                type: "text",
+                text: "🎰 แจกโบนัส VIP",
+                size: "xl",
+                weight: "bold",
+                color: "#FFD700",
+                align: "center"
+              },
+              {
+                type: "text",
+                text: "สมาชิกใหม่ รับทันที 100.-",
+                size: "md",
+                color: "#ffffff",
+                align: "center"
+              },
+              {
+                type: "text",
+                text: "ไม่ต้องฝาก • ไม่ต้องแชร์ OA\nรับจริง ถอนจริง",
+                size: "sm",
+                color: "#cccccc",
+                align: "center",
+                wrap: true
+              },
+              {
+                type: "text",
+                text: "⏳ จำกัดจำนวน รีบรับก่อนหมด!",
+                size: "sm",
+                color: "#ff6a00",
+                align: "center",
+                weight: "bold"
+              }
+            ]
+          },
 
-            "footer": {
-              "type": "box",
-              "layout": "vertical",
-              "backgroundColor": "#000000",
-              "paddingAll": "12px",
-              "contents": [
-                {
-                  "type": "button",
-                  "style": "primary",
-                  "color": "#FFD700",
-                  "action": {
-                    "type": "uri",
-                    "label": "🔥 รับโบนัสฟรี 100.-",
-                    "uri": "https://slotwinners.carrd.co"
-                  }
-                }
-              ]
-            }
+          footer: {
+            type: "box",
+            layout: "vertical",
+            backgroundColor: "#000000",
+            paddingAll: "12px",
+            contents: [{
+              type: "button",
+              style: "primary",
+              color: "#FFD700",
+              action: {
+                type: "uri",
+                label: "🔥 รับโบนัสฟรี 100.-",
+                uri: "https://slotwinners.carrd.co"
+              }
+            }]
           }
         }
-      ],
-      {
-        isMultiple: true,
-        targetType: ["user", "group"]
-      }
+      }],
+      { isMultiple: true }
     );
 
     if (result) {
       document.querySelector(".slots").style.animation = "none";
       document.getElementById("successText").innerHTML =
         "✅ แชร์สำเร็จแล้ว<br>📸 แคปภาพส่งแอดมิน<br>🎁 รอรับโค้ดได้เลย";
-
-      setTimeout(() => {
-        liff.closeWindow();
-      }, 1500);
+      setTimeout(() => liff.closeWindow(), 1500);
     }
 
-  } catch (e) {
+  } catch {
     document.getElementById("slot").style.display = "none";
     alert("ยกเลิกการแชร์");
   }
