@@ -113,60 +113,88 @@ h2 {
 async function shareFlex() {
   await liff.shareTargetPicker([
     {
-      "type": "flex",
-      "altText": "🎉 รับโบนัสฟรี 100.-",
-      "contents": {
-        "type": "bubble",
-        "size": "giga",
-        "hero": {
-          "type": "image",
-          "url": "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
-          "size": "full",
-          "aspectRatio": "1:1",
-          "aspectMode": "cover"
-        },
-          body: {
-                type: "box",
-                layout: "vertical",
-                backgroundColor: "#111111",
-                contents: [
-                    {
-                        type: "text",
-                        text: "แจกทุนฟรี100.-",
-                        size: "xl",
-                        weight: "bold",
-                        color: "#ffce5c"
-                    },
-                    {
-                        type: "text",
-                        text: "สมัครกดรับโปรโมชั่นได้เลย",
-                        size: "sm",
-                        color: "#cccccc",
-                        margin: "md"
-                    }
-                ]
-        "footer": {
+  "type": "flex",
+  "altText": "🎉 แจกทุนฟรี 100.-",
+  "contents": {
+    "type": "bubble",
+    "size": "giga",
+
+    "hero": {
+      "type": "image",
+      "url": "https://img2.pic.in.th/pic/image---2025-12-14T121407.121.png",
+      "size": "full",
+      "aspectRatio": "1:1",
+      "aspectMode": "cover"
+    },
+
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#111111",
+      "paddingAll": "0px",
+      "contents": [
+
+        /* 🔥 เส้นคั่น Glow */
+        {
           "type": "box",
           "layout": "vertical",
-          "spacing": "sm",
-          "backgroundColor": "#000000",
+          "height": "6px",
+          "background": {
+            "type": "linearGradient",
+            "angle": "0deg",
+            "startColor": "#000000",
+            "endColor": "#000000",
+            "centerColor": "#FFD700"
+          }
+        },
+
+        /* 📄 เนื้อหา */
+        {
+          "type": "box",
+          "layout": "vertical",
+          "paddingAll": "16px",
           "contents": [
             {
-              "type": "button",
-              "style": "primary",
-              "height": "md",
-              "color": "#FFD700",
-              "action": {
-                "type": "uri",
-                "label": "รับโบนัสฟรี100.-",
-                "uri": "https://slotwinners.carrd.co"
-              }
+              "type": "text",
+              "text": "แจกทุนฟรี100.-",
+              "size": "xl",
+              "weight": "bold",
+              "color": "#ffce5c",
+              "align": "center"
+            },
+            {
+              "type": "text",
+              "text": "สมัครกดรับโปรโมชั่นได้เลย",
+              "size": "sm",
+              "color": "#cccccc",
+              "align": "center",
+              "margin": "md"
             }
           ]
         }
-      }
+      ]
+    },
+
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "backgroundColor": "#000000",
+      "contents": [
+        {
+          "type": "button",
+          "style": "primary",
+          "height": "md",
+          "color": "#FFD700",
+          "action": {
+            "type": "uri",
+            "label": "รับโบนัสฟรี100.-",
+            "uri": "https://slotwinners.carrd.co"
+          }
+        }
+      ]
     }
-  ]);
+  }
 }
 
 liff.init({
